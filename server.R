@@ -85,7 +85,35 @@ server <- function(input, output) {
             coord_cartesian(ylim = c(aux1, aux2)) +
             theme_bw() +
             scale_x_date(date_labels = "%m/%d/%Y")
-        
         a
+    })
+        
+    output$box <- renderPlot({
+      # All the inputs
+      df <- select_category()
+      
+      aux <- df$Profit %>% na.omit() %>% as.numeric()
+      aux1 <- min(aux)
+      aux2 <- max(aux)
+      
+      df$Date <- as.Date(df$Date)
+      
+      # Ordenar df pela coluna Date
+      df <- df[order(df$Date), ]
+      
+      a <- df %>% 
+        ggplot( aes(Date, Profit, group=1)) +
+        geom_boxplot() +
+        scale_fill_viridis(discrete = TRUE, alpha=0.9) +
+        geom_jitter(color="black", size=1, alpha=0.9) +
+        theme_ipsum() +
+        theme(
+          legend.position="none",
+          plot.title = element_text(size=21)
+        ) +
+        ggtitle("Lucro obtido na venda") +
+        xlab("Data")
+      a
+
     })
 }
