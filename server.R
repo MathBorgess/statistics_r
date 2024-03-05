@@ -8,7 +8,10 @@ server <- function(input, output) {
         df_category <- master_df %>% 
             filter(Category == category_name) 
         
-        return(df_category)
+        df_category_date <- df_category %>% 
+            filter(Date >= twin[1] & Date <= twin[2])
+
+        return(df_category_date)
     })
     
     output$timedate <- renderUI({
@@ -70,7 +73,11 @@ server <- function(input, output) {
         aux1 <- min(aux)
         aux2 <- max(aux)
         
-        df$Date <- ymd(df$Date)
+        df$Date <- as.Date(df$Date)
+        
+        # Ordenar df pela coluna Date
+        df <- df[order(df$Date), ]
+        
         a <- df %>% 
             ggplot(aes(Date, Profit, group=1)) +
             geom_path() +
