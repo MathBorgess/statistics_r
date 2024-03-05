@@ -1,4 +1,4 @@
-setwd('~/Documentos/shiny-project/shiny-project')
+setwd('~/github/statistics_r')
 
 source('global.R')
 source('ui.R')
