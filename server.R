@@ -1,25 +1,22 @@
 
-# Define server logic required to draw a histogram
 server <- function(input, output) {
-    ################### INPUT ####################
-    select_stock <- eventReactive(input$go, {
+    select_category <- eventReactive(input$go, {
         
-        stock_name <- input$stock
+        category_name <- input$category
         twin <- input$true_date
         
-        df_stock <- master_df %>% 
-            filter(Index == stock_name) 
-        ## FALTA -> FILTRAR O DF POR DATA!!
+        df_category <- master_df %>% 
+            filter(Category == category_name) 
         
-        return(df_stock)
+        return(df_category)
     })
     
     output$timedate <- renderUI({
         
-        stock_name <- input$stock
+        category_name <- input$category
         
         df <- master_df %>% 
-            filter(Index == stock_name)
+            filter(Category == category_name)
         
         min_time <- min(df$Date)
         max_time <- max(df$Date)
@@ -30,59 +27,28 @@ server <- function(input, output) {
                        max  = max_time,
                        format = "dd/mm/yy",
                        separator = " - ",
-                       language='pt-BR')
+                       language='pt-BR'
+                       )
     })
     
-    output$timedate_comp <- renderUI({
-        
-        stock_name <- input$stock_comp
-        
-        df <- master_df %>% 
-            filter(Index %in% stock_name)
-        
-        maxmin_time <- df %>% 
-            group_by(Index) %>% 
-            summarise(MD = min(Date)) %>% 
-            .$MD %>% 
-            max()
-        
-        minmax_time <- df %>% 
-            group_by(Index) %>% 
-            summarise(MD = max(Date)) %>% 
-            .$MD %>% 
-            min()
-        
-        min_time <- maxmin_time
-        max_time <- minmax_time
-        
-        dateRangeInput("true_date_comp", "Período de análise",
-                       end = max_time,
-                       start = min_time,
-                       min    = min_time,
-                       max    = max_time,
-                       format = "dd/mm/yy",
-                       separator = " - ",
-                       language='pt-BR')
-    })
     
     ################ OUTPUT #####################
     Info_DataTable <- eventReactive(input$go,{
-        df <- select_stock()
+        df <- select_category()
         
-        mean <- df %>% select(Close) %>% colMeans()
+        mean <- df %>% select(Profit) %>% colMeans()
         Media <- mean[[1]]
+        Moda <- df %>% select(Profit) %>% table() %>% as.data.frame() %>% arrange(desc(Freq)) %>% head(1) %>% select(Profit)
+        Moda <- Moda[[1]]
+        Mediana <- median(df$Profit)
+        Desvio <- sd(df$Profit)
         
-        Stock <- input$stock
+        category <- input$category
         
-        df_tb <-  data.frame(Stock, Media)
+        df_tb <-  data.frame(category, Media, Moda, Mediana, Desvio)
         
         df_tb <- as.data.frame(t(df_tb))
         
-        # tb  <- as_tibble(cbind(nms = names(df_tb), t(df_tb)))
-        # tb <- tb %>% 
-        #     rename('Informações' = nms,
-        #            'Valores' = V2)
-        # 
         return(df_tb)
     })
     
@@ -98,20 +64,20 @@ server <- function(input, output) {
     
     output$sh <- renderPlot({
         # All the inputs
-        df <- select_stock()
+        df <- select_category()
         
-        aux <- df$Close %>% na.omit() %>% as.numeric()
+        aux <- df$Profit %>% na.omit() %>% as.numeric()
         aux1 <- min(aux)
         aux2 <- max(aux)
         
         df$Date <- ymd(df$Date)
         a <- df %>% 
-            ggplot(aes(Date, Close, group=1)) +
+            ggplot(aes(Date, Profit, group=1)) +
             geom_path() +
-            ylab('Preço da Ação em $') +
+            ylab('Lucro obtido na venda') +
             coord_cartesian(ylim = c(aux1, aux2)) +
             theme_bw() +
-            scale_x_date(date_labels = "%Y-%m-%d")
+            scale_x_date(date_labels = "%m/%d/%Y")
         
         a
     })

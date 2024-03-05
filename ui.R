@@ -1,26 +1,25 @@
 
 
-header <- dashboardHeader(title = "Projeto de Estatística")
+header <- dashboardHeader(title = "Dashboard")
 
 sidebar <- dashboardSidebar(
     sidebarMenu(
-        menuItem("Métricas", tabName = "m", icon = icon("chart-line")),
-        menuItem('Comparando Ações', tabName = 'comp', icon = icon('chart-bar'))
+        menuItem("Dashboard", tabName = "metrics", icon = icon("chart-line"))
     )
 )
 
 body <- dashboardBody(
     tabItems(
-        tabItem(tabName = 'm',
+        tabItem(tabName = 'metrics',
                 fluidRow(
                     box(title = 'Selecione suas opções', width=12, solidHeader = TRUE, status='warning',
-                        selectInput('stock', 'Ação', stock_list, multiple=FALSE),
+                        selectInput('category', 'Categoria', category_array, multiple=FALSE),
                         uiOutput("timedate"),
                         actionButton('go', 'Submeter')
                         )
                 ),
                 fluidRow(
-                    box(title = "Informações sobre a ação", width = 12, solidHeader = TRUE,
+                    box(title = "Informações sobre a categoria", width = 12, solidHeader = TRUE,
                         DTOutput('info')
                     )
                 ),
@@ -29,19 +28,11 @@ body <- dashboardBody(
                         plotOutput('sh')
                     )
                 ),
-        ),
-        tabItem(tabName = 'comp',
-                fluidRow(
-                    box(title = 'Selecione suas opções', width=12, solidHeader = TRUE, status='warning',
-                        selectInput('stock_comp', 'Ação', stock_list, multiple=TRUE),
-                        uiOutput("timedate_comp"),
-                        actionButton('go_comp', 'Submeter')
-                    )
-                ),            
         )
     )
 )
 
 ui <- dashboardPage(
-    skin = 'blue',
-    header, sidebar, body)
+    skin = 'green',
+    header, sidebar, body
+    )
