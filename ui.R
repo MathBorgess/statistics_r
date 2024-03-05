@@ -34,7 +34,7 @@ body <- dashboardBody(
                   )
                 ),
                 fluidRow(
-                    box(title = "Série de Preços", width = 12, solidHeader = TRUE,
+                    box(title = "Histograma da série", width = 12, solidHeader = TRUE,
                         plotOutput('Hist')
                     )
                 ),

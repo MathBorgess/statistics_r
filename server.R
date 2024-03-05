@@ -45,10 +45,14 @@ server <- function(input, output) {
         Moda <- Moda[[1]]
         Mediana <- median(df$Profit)
         Desvio <- sd(df$Profit)
+        aux <- df$Profit %>% na.omit() %>% as.numeric()
+        Lucro_Minimo <- min(aux)
+        Lucro_Maximo <- max(aux)
+
         
         category <- input$category
         
-        df_tb <-  data.frame(category, Media, Moda, Mediana, Desvio)
+        df_tb <-  data.frame(category, Media, Moda, Mediana, Desvio, Lucro_Minimo, Lucro_Maximo)
         
         df_tb <- as.data.frame(t(df_tb))
         
@@ -84,7 +88,8 @@ server <- function(input, output) {
             ylab('Lucro obtido na venda') +
             coord_cartesian(ylim = c(aux1, aux2)) +
             theme_bw() +
-            scale_x_date(date_labels = "%m/%d/%Y")
+            scale_x_date(date_labels = "%m/%d/%Y")+
+            xlab("Data")
         a
     })
         
@@ -111,7 +116,6 @@ server <- function(input, output) {
           legend.position="none",
           plot.title = element_text(size=21)
         ) +
-        ggtitle("Lucro obtido na venda") +
         xlab("Data")
       a
 
@@ -137,7 +141,8 @@ server <- function(input, output) {
             theme_bw() +
             theme(
             plot.title = element_text(size=15)
-    )
+            )+
+            xlab("Data")
         
         a
     })
