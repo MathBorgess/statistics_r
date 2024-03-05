@@ -6,6 +6,8 @@ library(ggplot2)
 library(DT)
 library(tidyverse)
 library(lubridate)
+library(hrbrthemes)
+library(viridis)
 
 master_df <- read.csv('Amazon-2_Raw.csv')
 category_array <- sort(master_df$Category %>% unique())

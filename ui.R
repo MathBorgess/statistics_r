@@ -24,9 +24,14 @@ body <- dashboardBody(
                     )
                 ),
                 fluidRow(
-                    box(title = "Série de Preços", width = 12, solidHeader = TRUE,
+                    box(title = "Gráfico em linha da série", width = 12, solidHeader = TRUE,
                         plotOutput('sh')
                     )
+                ),
+                fluidRow(
+                  box(title = "Boxplot da série", width = 12, solidHeader = TRUE,
+                      plotOutput('box')
+                  )
                 ),
                 fluidRow(
                     box(title = "Série de Preços", width = 12, solidHeader = TRUE,
