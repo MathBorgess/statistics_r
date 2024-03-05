@@ -28,6 +28,11 @@ body <- dashboardBody(
                         plotOutput('sh')
                     )
                 ),
+                fluidRow(
+                    box(title = "Série de Preços", width = 12, solidHeader = TRUE,
+                        plotOutput('Hist')
+                    )
+                ),
         )
     )
 )

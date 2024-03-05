@@ -88,4 +88,29 @@ server <- function(input, output) {
         
         a
     })
+
+    output$Hist <- renderPlot({
+        # All the inputs
+        df <- select_category()
+        
+        aux <- df$Profit %>% na.omit() %>% as.numeric()
+        aux1 <- min(aux)
+        aux2 <- max(aux)
+        
+        df$Date <- as.Date(df$Date)
+        
+        # Ordenar df pela coluna Date
+        df <- df[order(df$Date), ]
+        
+        a <- df %>% 
+            ggplot( aes(x=Date)) +
+            geom_histogram( binwidth=(aux2-aux1)/20, fill="#69b3a2", color="#e9ecef", alpha=10) +
+            ylab('Quantidade de vendas') +
+            theme_bw() +
+            theme(
+            plot.title = element_text(size=15)
+    )
+        
+        a
+    })
 }
