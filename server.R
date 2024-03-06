@@ -87,7 +87,8 @@ server <- function(input, output) {
             geom_path() +
             ylab('Lucro obtido na venda') +
             coord_cartesian(ylim = c(aux1, aux2)) +
-            theme_bw() +
+            geom_line( color="#69b3a2", alpha = 10) +
+            theme_light() +
             scale_x_date(date_labels = "%m/%d/%Y")+
             xlab("Data")
         a
@@ -110,8 +111,8 @@ server <- function(input, output) {
         ggplot( aes(Date, Profit, group=1)) +
         geom_boxplot() +
         scale_fill_viridis(discrete = TRUE, alpha=0.9) +
-        geom_jitter(color="black", size=1, alpha=0.9) +
-        theme_ipsum() +
+        geom_jitter(color="#69b3a2", size=1, alpha=0.9) +
+        theme_light() +
         theme(
           legend.position="none",
           plot.title = element_text(size=21)
@@ -138,7 +139,7 @@ server <- function(input, output) {
             ggplot( aes(x=Date)) +
             geom_histogram( binwidth=(aux2-aux1)/20, fill="#69b3a2", color="#e9ecef", alpha=10) +
             ylab('Quantidade de vendas') +
-            theme_bw() +
+            theme_light() +
             theme(
             plot.title = element_text(size=15)
             )+
