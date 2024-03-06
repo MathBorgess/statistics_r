@@ -117,7 +117,8 @@ server <- function(input, output) {
           legend.position="none",
           plot.title = element_text(size=21)
         ) +
-        xlab("Data")
+        xlab("Data") +
+        ylab('Lucro obtido na venda')
       a
 
     })
